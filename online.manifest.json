@@ -7,9 +7,9 @@
 
     "description": "JuLian工具 喵",
     "icons": {
-        "16": "static/img/fe-16.png",
-        "48": "static/img/fe-48.png",
-        "128": "static/img/fe-128.png"
+        "16": "img/16.png",
+        "48": "img/48.png",
+        "128": "img/128.png"
     },
 
     "browser_action": {
