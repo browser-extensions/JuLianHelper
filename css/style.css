@@ -228,3 +228,7 @@ textarea.materialize-textarea{
  height: 200px;
  overflow: auto;
 }
+textarea{
+    height: 300px;
+    width: 100%;
+}

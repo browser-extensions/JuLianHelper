@@ -1,19 +1,27 @@
 
 $(function () {
-    
+   
+//开始
   $("#startId").on("click",function(){
      contentScript();
   });
   
-  
+//停止 
   $("#stopId").on("click",function(){
      stopCrap();
   });
-  
+//添加订单 
   $("#addOrderId").on("click",function(){
      addOrderCode();
   });
-
+//清除
+  $("#clearId").on("click",function(){
+     
+  });
+// 打开页面
+  $("#openPageId").on("click",function(){
+     
+  });
 })
 
 
@@ -47,9 +55,9 @@ function stopCrap(){
     
     chrome.storage.sync.remove('sl',function(){
         PL.open({
-                    content: '暂停成功',
-                    time: 2
-                });
+            content: '暂停成功',
+            time: 2
+        });
     });
 }
 
@@ -62,8 +70,7 @@ function contentScript(){
             chrome.tabs.sendMessage(
               tabs[0].id, 
              {greeting: "startInfo"}, 
-             function(response) {
-                 
+             function(response) {                 
                  PL.open({
                     content: response.farewell,
                     time: 2
