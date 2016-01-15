@@ -43,22 +43,22 @@ function startL(){
 
 
 function sedPosMsg(data){ 
-    var Ycode = PD('.panel-cp-ability').find('.em').eq(0).text(),
-                        Ycode = PD('.panel-cp-ability').find('.em').eq(0).text(),
-                        Ycop = PD('.panel-cp-ability').find('.em').eq(1).text(),
-                        UName = PD('#J_LoginInfo a').eq(0).text(),
-                        Ocode = GetQueryString('tId');
+    // var Ycode = PD('.panel-cp-ability').find('.em').eq(0).text(),
+    //                     Ycode = PD('.panel-cp-ability').find('.em').eq(0).text(),
+    //                     Ycop = PD('.panel-cp-ability').find('.em').eq(1).text(),
+    //                     UName = PD('#J_LoginInfo a').eq(0).text(),
+    //                     Ocode = GetQueryString('tId');
                         
-                    var msg = {
-                        type: "taobao-information",           
-                        Ycode : Ycode,
-                        Ycop : Ycop,
-                        UName : UName,
-                        Ocode : GetQueryString('tId')
-                    };
+                    // var msg = {
+                    //     type: "taobao-information",           
+                    //     Ycode : Ycode,
+                    //     Ycop : Ycop,
+                    //     UName : UName,
+                    //     Ocode : GetQueryString('tId')
+                    // };
     
      
-   chrome.runtime.sendMessage(msg);         
+   chrome.runtime.sendMessage(taobaoElement());         
    locationUrlGo();
 }
      
@@ -85,3 +85,22 @@ function setStorage(items,call){
     }); 
 }
 
+
+// 淘宝页面数据
+function taobaoElement(){
+    // var uName = PD('.addr_and_note').find('dd').text(),
+    //     Ocode = PD('.misc-info').find('.willblur').text(),
+    //     Ycode : PD('.logistics-id').text(),
+    //     Ycop : PD('.logistics-company').text();
+       
+        var msg = {
+         type: "taobao-information",           
+         uName : PD('.addr_and_note').find('dd').text(),
+         Ocode : PD('.misc-info').find('.willblur').text(),
+         Ycode : PD('.logistics-id').text(),
+         Ycop : PD('.logistics-company').text()
+     };
+       
+        
+        return msg;
+}

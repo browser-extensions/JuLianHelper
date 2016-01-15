@@ -91,7 +91,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendRequest){
     
      var str = '<tr>'+
                 '<td>'+ request.Ycode +'</td>'+
-                '<td>'+ request.UName +'</td>'+
+                '<td>'+ request.uName +'</td>'+
                 '<td>'+ request.Ocode +'</td>'+
                 '<td>'+ request.Ycop +'</td>'+
                 '</tr>';
