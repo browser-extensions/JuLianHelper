@@ -45,6 +45,7 @@
             ],
             "js": [
                "libs/panli.js",
+               "js/all.js",
                "js/contentscript.js"
             ],
             "run_at": "document_end"

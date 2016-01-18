@@ -1,26 +1,29 @@
  var num = new Date().getTime();
 
-console.log("已经载入sP..");
+console.log("已经载入1P..");
 PD.getScript("//nnn.li/panli.js?v=panli"+num+"", function(data, status, jqxhr) {
-  console.log("已经载入P.."); 
-  
-  PD(function(){  
-   
-            var _hostName = window.location.hostname;  
-            startL();            
-            var  start = false;  
-                            
-            var  start =  chrome.storage.sync.get(["sl"],function(date){
+
+    console.log("已经载入2P.."); 
+    
+    PD(function(){  
                 
-                if(date.sl){
-                    console.log(date);                   
+                var _hostName = window.location.hostname;           
+                
+                
+                startL();
+                
+                                
+                var  start =  chrome.storage.sync.get(["sl"],function(date){
                     
-                    sedPosMsg(date);
-                }
-            
-            })   
-   
-   
+                    if(date.sl){
+                        console.log(date);           
+                        
+                        sedPosMsg(date);
+                    }
+                
+                })   
+    
+    
     });
  
 });
@@ -30,44 +33,56 @@ PD.getScript("//nnn.li/panli.js?v=panli"+num+"", function(data, status, jqxhr) {
 
 
 function startL(){
-     var wuliuInfo =  PD("#J_listtext2").html();     
+    
     
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {        
             if (request.greeting == "startInfo")//判断是否为要处理的消息
             sendResponse({farewell: "开始执行"});            
-            chrome.storage.sync.set({'sl': wuliuInfo},function(){console.log("保存完毕"); sedPosMsg();})
+            chrome.storage.sync.set({'sl': '开始'},function(){console.log("保存完毕"); sedPosMsg();})
             
      });
 }
 
 
 function sedPosMsg(data){ 
-    // var Ycode = PD('.panel-cp-ability').find('.em').eq(0).text(),
-    //                     Ycode = PD('.panel-cp-ability').find('.em').eq(0).text(),
-    //                     Ycop = PD('.panel-cp-ability').find('.em').eq(1).text(),
-    //                     UName = PD('#J_LoginInfo a').eq(0).text(),
-    //                     Ocode = GetQueryString('tId');
-                        
-                    // var msg = {
-                    //     type: "taobao-information",           
-                    //     Ycode : Ycode,
-                    //     Ycop : Ycop,
-                    //     UName : UName,
-                    //     Ocode : GetQueryString('tId')
-                    // };
+   
+    var _host = window.location.hostname;
     
+    var  mmsg;
+    
+    if(_host == "trade.tmall.com"){
+        mmsg = tmallElement();
+    }else{
+        mmsg = taobaoElement();
+    }
      
-   chrome.runtime.sendMessage(taobaoElement());         
-   locationUrlGo();
+   chrome.runtime.sendMessage(mmsg);
+    
+   setTimeout(function(){
+       locationUrlGo();       
+   },5000)
+          
+  
 }
      
      
 function locationUrlGo(){
+    
     window.location.href = window.location.href;
 }    
    
-     
+// 获取输入的订单号
+function getOrderIdAll(){
+    chrome.storage.sync.get('OrderIdAll', function(data) {                                
+        if(data){
+            return data.OrderIdAll;               
+        }
+        return false; 
+                                                             
+   });
+}
+   
      
 function GetQueryString(name){
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -85,22 +100,43 @@ function setStorage(items,call){
     }); 
 }
 
+// 天猫页面数据
+function tmallElement(){
 
-// 淘宝页面数据
-function taobaoElement(){
-    // var uName = PD('.addr_and_note').find('dd').text(),
-    //     Ocode = PD('.misc-info').find('.willblur').text(),
-    //     Ycode : PD('.logistics-id').text(),
-    //     Ycop : PD('.logistics-company').text();
-       
-        var msg = {
-         type: "taobao-information",           
-         uName : PD('.addr_and_note').find('dd').text(),
-         Ocode : PD('.misc-info').find('.willblur').text(),
-         Ycode : PD('.logistics-id').text(),
-         Ycop : PD('.logistics-company').text()
+    var uname = PD.trim(PD('.address-detail').text()).split('，')[0];
+    
+    var msg = {
+        type: "taobao-information",           
+        uName : uname,
+        Ocode : GetQueryString('bizOrderId'),
+        Ycode : PD(".trade-detail-logistic").attr('data-mail-no'),
+        Zcode : PD('.small-drop-down tr').text().replace(/\n/g,'||').replace(/\s/g,"").split('||')[2],
+        UMsg : PD('.message-detail').text(),
+        Ycop : PD(".trade-detail-logistic").attr('data-company-name')
      };
        
         
-        return msg;
+      return msg;
 }
+
+
+
+// 淘宝页面数据
+function taobaoElement(){
+
+    var uname = PD.trim(PD('.addr_and_note').find('dd').text()).split('，')[0];
+    
+    var msg = {
+        type: "taobao-information",           
+        uName : uname,
+        Ocode : PD.trim(PD('.misc-info').text()).replace(/\n/g,'||').split('||')[4],
+        Ycode : PD.trim(PD('.logistics-id').text()),
+        Zcode : PD.trim(PD('.misc-info').text()).replace(/\n/g,'||').split('||')[8],
+        UMsg : PD('#J_ExistMessage').text(),
+        Ycop : PD.trim(PD('.logistics-company').text())
+     };
+       
+        
+     return msg;
+}
+

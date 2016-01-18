@@ -38,15 +38,58 @@ function addOrderCode(){
     var pagei = PL.open({
         type: 1, //1代表页面层
         content: textartD,
-        style: 'width:600px; height:400px; border:none;',
+        style: 'width:660px; height:400px; border:none;',
         success: function(oPan){
             var cla = 'getElementsByClassName';
             oPan[cla]('closediy')[0].onclick = function(){
-                PL.close(pagei)
+                
+                var codeALl = $.trim(oPan[cla]('textarea')[0].value).replace(/\s/g,"").replace(/\s/g,"").replace(/\n/g,"");      
+                
+                
+                var bizOrderIdAll = codeALl.split(',');
+                
+                console.log(bizOrderIdAll);
+               var obj = {};
+               
+               obj.OrderIdAll = bizOrderIdAll
+                 
+                 chrome.storage.sync.set(obj, function(){
+                     
+                     
+                     PL.open({
+                        title: '添加成功',
+                        content: '是否打开第一个订单详细页面',
+                        btn: ['嗯', '不要'],
+                        yes: function(index){
+                            
+                            
+                            
+                            chrome.storage.sync.get('OrderIdAll', function(data) {
+                                
+                                if(data){
+                                   window.open(openTaoBaoUrl(data.OrderIdAll[0]));     
+                                }
+                              
+                                
+                            });
+                            
+                            return;
+                                          
+                        }
+                    });
+                    
+                }); 
+                
+                
+                
             }
         }
     });
 }
+
+
+
+
 
 /**
 * 停止
@@ -85,20 +128,21 @@ function contentScript(){
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendRequest){
 	if(request.type!=="taobao-information")
-		return;
+	return;
 	
 	
     
      var str = '<tr>'+
-                '<td>'+ request.Ycode +'</td>'+
-                '<td>'+ request.uName +'</td>'+
                 '<td>'+ request.Ocode +'</td>'+
+                '<td>'+ request.Zcode +'</td>'+
+                '<td>'+ request.uName +'</td>'+
+                '<td>'+ request.Ycode +'</td>'+
                 '<td>'+ request.Ycop +'</td>'+
                 '</tr>';
               
     $(".order-tbody").append(str);
     
-	alert(articleData.title);
+
 });
 
 
@@ -120,3 +164,9 @@ function render_search_result(result, isBulk) {
 }
 
 
+
+//获取跳转的url
+function openTaoBaoUrl(ID){
+   var url = 'https://buyertrade.taobao.com/trade/detail/trade_item_detail.htm?spm=a1z09.2.0.0.Sx0xKe&bizOrderId='+ID;   
+   return url;    
+}
