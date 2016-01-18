@@ -36,10 +36,23 @@ function startL(){
     
     
     chrome.runtime.onMessage.addListener(
-      function(request, sender, sendResponse) {        
-            if (request.greeting == "startInfo")//判断是否为要处理的消息
-            sendResponse({farewell: "开始执行"});            
-            chrome.storage.sync.set({'sl': '开始'},function(){console.log("保存完毕"); sedPosMsg();})
+      function(request, sender, sendResponse) { 
+          
+          if(request.greeting == "reload"){
+                window.location.href = window.location.href;  
+                sendResponse({farewell: "清除成功"});       
+                return;
+            }
+          
+               
+            if (request.greeting == "startInfo"){
+                sendResponse({farewell: "开始执行"});            
+                chrome.storage.sync.set({'sl': '开始'},function(){console.log("保存完毕"); sedPosMsg();})
+            }
+            
+               
+       
+            
             
      });
 }
@@ -59,29 +72,51 @@ function sedPosMsg(data){
      
    chrome.runtime.sendMessage(mmsg);
     
-   setTimeout(function(){
-       locationUrlGo();       
-   },5000)
-          
-  
+    
+    //postOrderInfo(mmsg);
+    
+    dBOrderTbIndex('1556916994575510',mmsg)
+    
+    chrome.storage.sync.get('OrderIdAll', function(data) {                                
+       
+       if(data.OrderIdAll){
+            
+            if(data.OrderIdAll.length>0){
+                var _code = data.OrderIdAll[0] ;
+                console.log(_code);
+            
+        orderIdDel();
+                  setTimeout(function(){
+                     
+                            locationUrlGo(_code);       
+                  },5000)
+            }
+            
+           
+        }
+     
+                                                             
+    });
+    
+
 }
      
-     
-function locationUrlGo(){
+   
+
+chrome.storage.sync.get('OrderIdAll', function(data) {                                
+       
+      
+      console.log(data.OrderIdAll.length)
+                                                             
+});
+   
+// 跳转 订单详细 url
+function locationUrlGo(id){  
     
-    window.location.href = window.location.href;
+    window.location.href = openTaoBaoUrl(id);
 }    
    
-// 获取输入的订单号
-function getOrderIdAll(){
-    chrome.storage.sync.get('OrderIdAll', function(data) {                                
-        if(data){
-            return data.OrderIdAll;               
-        }
-        return false; 
-                                                             
-   });
-}
+
    
      
 function GetQueryString(name){
@@ -139,4 +174,8 @@ function taobaoElement(){
         
      return msg;
 }
+
+
+
+ 
 

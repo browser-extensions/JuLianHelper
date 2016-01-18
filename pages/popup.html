@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/libs/materialize/css/materialize.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-   
+    <link rel="stylesheet" href="/css/style.css">   
     <script src="/libs/jquery.min.js"></script>
      <script src="/libs/materialize/js/materialize.min.js"></script>
     <script src="/libs/panli.js"></script>
+    <script src="/libs/lodash.js"></script>
+    <script src="/js/all.js"></script>
     <script src="/libs/tpl.js"></script>
     <script src="/js/pop.js"></script>
     <title>淘宝订单信息</title>
@@ -16,7 +17,7 @@
 <div class="inner">
     <h1>淘宝订单信息
         <small>
-         <a href="https://detail.i56.taobao.com/trace/trace_detail.htm?tId=1558662244905510&userId=1957275128" class="waves-effect waves-light btn" id="openPageId" target="_blank" title="打开页面">打开页面</a>
+         <a class="waves-effect waves-light btn" id="openPageId" target="_blank" title="打开页面">打开页面</a>
          <a class="waves-effect waves-light btn" id="startId" target="_blank" title="开始">开始</a>
          <a class="waves-effect waves-light btn" id="stopId" target="_blank" title="停止">停止</a>
          <a class="waves-effect waves-light btn" id="clearId" target="_blank" title="清除">清除</a>

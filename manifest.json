@@ -45,6 +45,7 @@
             ],
             "js": [
                "libs/panli.js",
+               "libs/lodash.js",
                "js/all.js",
                "js/contentscript.js"
             ],
