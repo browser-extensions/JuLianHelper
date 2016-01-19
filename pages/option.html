@@ -8,7 +8,7 @@
      <script src="/libs/materialize/js/materialize.min.js"></script>
     <script src="/libs/panli.js"></script>
     <script src="/libs/lodash.js"></script>
-    <script src="/libs/tpl.js"></script>
+    <script src="/libs/doT.js"></script>
     <script src="/js/all.js"></script>
     <script src="/js/pop.js"></script>
     <script src="/js/option.js"></script>
@@ -40,20 +40,12 @@
                     <td>12345679</td>
                     <td>Eclair</td>
                     <td>C123456</td>
+                    <td>C123456</td>
                     <td>顺风</td>
                 </tr>           -->
             </tbody>
         </table>        
     </div>
 </div>
-<script id="host-item" type="text/template">
-    <tr id="host-{=id}" data-id="{=id}" data-domain="{=domain}" title="Updated at: {=uptime}">
-        <td><a class="host-status {=status_class}" data-status="{=status}" data-id="{=id}" data-domain="{=domain}" href="#"></a></td>
-        <td>{=ip}</td>
-        <td>{=domain}</td>
-        <td>{=tags}</td>
-        <td>{=note}</td>
-    </tr>
-</script>
 </body>
 </html>

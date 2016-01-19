@@ -335,14 +335,15 @@ function DBOrderInfoTbAll(){
         function processNext(copiedData){
             var _tb,data= copiedData.shift();
             if(data){
-                _tb = 'tb'+data[i];
+                _tb = 'tb'+data;
                 DBinfoList(_tb,function(data){
                      infoall.push(data);
                      console.log(data);
                      processNext(copiedData);  
                 });
             }else{
-                console.log(infoall);   
+              
+                readerList(infoall) 
                  //callback(infoall);
             }
             
@@ -360,7 +361,25 @@ function DBOrderInfoTbAll(){
 //页面渲染
 
 function readerList(data){
+   console.log(data);
    
+   var str = '';
+   
+   for(var i=0;i<data.length;i++){
+       
+         str = str + '<tr>'+
+                    '<td>'+ data[i].Ocode +'</td>'+
+                    '<td>'+ data[i].Zcode +'</td>'+
+                    '<td>'+ data[i].uName +'</td>'+
+                    '<td>'+ data[i].Ycode +'</td>'+
+                    '<td>'+ data[i].Ycop +'</td>'+
+               '</tr>';
+       
+       
+   }
+   
+   $('.order-tbody').html(str);
+     
 }
 
 
