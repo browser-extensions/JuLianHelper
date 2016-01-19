@@ -430,8 +430,30 @@ function DBinfoList(_tb,callback){
                 time: 2
         });
             
-            
-            
+
     })
  }
  
+ //  设置 抓取间隔时间
+function setTimeoutF(time,callback){
+    var obj = {};
+    obj.setTimeout = time;
+    chrome.storage.sync.set(obj, function(data) { 
+        
+        callback();
+        
+    })
+    
+    
+}
+
+// 设置 账户类型
+function setNumberTypeF(ntype,callback){
+    var obj = {};
+    obj.setNumberType = ntype;
+    chrome.storage.sync.set(obj, function(data) { 
+        
+        callback();
+        
+    })
+}

@@ -8,7 +8,6 @@
      <script src="/libs/materialize/js/materialize.min.js"></script>
     <script src="/libs/panli.js"></script>
     <script src="/libs/lodash.js"></script>
-
     <script src="/js/all.js"></script>
     <script src="/js/pop.js"></script>
     <script src="/js/option.js"></script>
@@ -25,10 +24,10 @@
     </h6>
     <hr/>
     
-    <form action="">    
+    <form action="" id="setForm" >    
         <div class="" style="width:200px;display: inline-block;">
                 选择抓取间隔
-                <select >选择时间</option>
+                <select name="setTime" id="setTime" >选择时间</option>
                     <option value="5">5秒</option>
                     <option value="10">10秒</option>
                     <option value="15">15秒</option>
@@ -39,12 +38,12 @@
                 选择账户类型
                 <p>
                     <span>
-                        <input name="group1"  checked="true" type="radio" id="test1" />
-                        <label for="test1">panli</label>
+                        <input name="numberType" value="1"  checked="true" type="radio" id="numberType1" />
+                        <label for="numberType1">panli</label>
                     </span>                
                     <span>
-                        <input name="group1" type="radio" id="test2" />
-                        <label for="test2">wa</label>
+                        <input name="numberType" value="2" type="radio" id="numberType2" />
+                        <label for="numberType2">wa</label>
                     </span>
                 </p>
         </div>

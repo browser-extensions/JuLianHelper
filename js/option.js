@@ -10,7 +10,21 @@ PD(function () {
     
      
         $('select').material_select();
-  
+        
+        
+        
+        
+         $('#setForm').on('submit', function(){
+            
+            var _t = $(this),
+                _Type = $("input[name='numberType']:checked").val(),
+                _setTime =  $("#setTime").find("option:selected").val();
+            console.log(_Type);
+            console.log(_setTime);
+            
+            return false;
+        });
+        
     
 })
 
