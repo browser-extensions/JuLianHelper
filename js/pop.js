@@ -17,8 +17,18 @@ $(function () {
 //清除
   $("#clearId").on("click",function(){
      
-     clearDB();
-     sedReload();
+     
+     PL.open({
+        title: '警告',
+        content: '您确定要删除所有数据吗',
+        btn: ['嗯', '不要'],
+        yes: function(index){
+            clearDB();
+            sedReload();
+        }
+    });
+     
+     
   });
 // 打开页面
   $("#openPageId").on("click",function(){

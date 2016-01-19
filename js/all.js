@@ -43,7 +43,7 @@ function addOrderCode(){
     var textartD = '<div class="input-field col s12">'+
           '<textarea id="textarea1" class="textarea"></textarea>'+
           ''+
-        '</div><button class="waves-effect waves-light btn closediy">确定</button>';
+        '</div><button class="waves-effect waves-light btn closediy">确定</button><span> &nbsp;&nbsp;&nbsp;只允许输入数字,并用逗号分割</span>';
     
     
     var pagei = PL.open({
@@ -54,16 +54,35 @@ function addOrderCode(){
             var cla = 'getElementsByClassName';
             oPan[cla]('closediy')[0].onclick = function(){
                 
-                var codeALl = $.trim(oPan[cla]('textarea')[0].value).replace(/\s/g,"").replace(/\s/g,"").replace(/\n/g,"");      
+                var codeALl = PD.trim(oPan[cla]('textarea')[0].value).replace(/\s/g,"").replace(/，/g,",").replace(/\s/g,"").replace(/\n/g,"");      
+                
+                var reg = /^(\d+,?)+$/;
+              
+                
+                if(!reg.test(codeALl)){
+                    
+                    PL.open({
+                        title: '错误',
+                        content: '输入单号格式不正确'
+                    });
+                    
+                    return; 
+                }
                 
                 
+                
+            
                 var bizOrderIdAll = codeALl.split(',');
                 
+               console.log(bizOrderIdAll);
+                
+               
+              
               
                var obj = {};
                
                obj.OrderIdAll = _.compact(bizOrderIdAll);
-                 
+                  console.log(obj.OrderIdAll);
                  chrome.storage.sync.set(obj, function(){
                      
                      
@@ -368,9 +387,10 @@ function readerList(data){
    for(var i=0;i<data.length;i++){
        
          str = str + '<tr>'+
-                    '<td>'+ data[i].Ocode +'</td>'+
+                    '<td><a class="del" >x</a>'+ data[i].Ocode +'</td>'+
                     '<td>'+ data[i].Zcode +'</td>'+
                     '<td>'+ data[i].uName +'</td>'+
+                    '<td>'+ data[i].UMsg +'</td>'+
                     '<td>'+ data[i].Ycode +'</td>'+
                     '<td>'+ data[i].Ycop +'</td>'+
                '</tr>';
@@ -378,7 +398,7 @@ function readerList(data){
        
    }
    
-   $('.order-tbody').html(str);
+   PD('.order-tbody').html(str);
      
 }
 
@@ -404,10 +424,14 @@ function DBinfoList(_tb,callback){
      chrome.storage.sync.clear( function(data) { 
         console.log(data);
      
+        PD(".order-tbody").html('');
         PL.open({
                 content: '清除成功',
                 time: 2
-            });
+        });
+            
+            
+            
     })
  }
  

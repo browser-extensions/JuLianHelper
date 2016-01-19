@@ -6,9 +6,11 @@
 
 
 
-$(function () {
+PD(function () {
     
-    
+     
+        $('select').material_select();
+  
     
 })
 

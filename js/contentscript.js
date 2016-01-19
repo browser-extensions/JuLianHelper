@@ -140,7 +140,7 @@ function tmallElement(){
     var msg = {
         type: "taobao-information",           
         uName : uname,
-        Ocode : GetQueryString('bizOrderId'),
+        Ocode : GetQueryString('biz_order_id'),
         Ycode : PD(".trade-detail-logistic").attr('data-mail-no'),
         Zcode : PD('.small-drop-down tr').text().replace(/\n/g,'||').replace(/\s/g,"").split('||')[2],
         UMsg : PD('.message-detail').text(),
