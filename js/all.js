@@ -434,23 +434,49 @@ function DBinfoList(_tb,callback){
     })
  }
  
+//  获取 抓取间隔时间
+function getSetTimeoutF(){
+    
+    chrome.storage.sync.get('setTimeout', function(data) { 
+        
+        if(data.setTimeout){
+            return data.setTimeout;
+        }
+        
+        return false;
+        
+    })   
+}
+ 
  //  设置 抓取间隔时间
-function setTimeoutF(time,callback){
+function setTimeoutF(time){
     var obj = {};
     obj.setTimeout = time;
     chrome.storage.sync.set(obj, function(data) { 
         
-        callback();
         
-    })
-    
+    })   
     
 }
+
+// 获取 账户类型
+
+function getSetNumberTypeF(){
+    chrome.storage.sync.get('NumberType', function(data) { 
+        
+        if(data.setTimeout){
+            return data.setNumberType;
+        }
+        
+        return false;   
+    })    
+}
+
 
 // 设置 账户类型
 function setNumberTypeF(ntype,callback){
     var obj = {};
-    obj.setNumberType = ntype;
+    obj.NumberType = ntype;
     chrome.storage.sync.set(obj, function(data) { 
         
         callback();
