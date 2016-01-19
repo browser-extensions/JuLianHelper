@@ -92,12 +92,11 @@ function addOrderCode(){
                         btn: ['嗯', '不要'],
                         yes: function(index){
                             
+                            PL.closeAll();                         
+                                    
+                            chrome.storage.sync.set({'sl': '开始'},function(){ })
                             
-                         
-                                    
-                                   chrome.storage.sync.set({'sl': '开始'},function(){ })
-                                    
-                                   window.open(openTaoBaoUrl(bizOrderIdAll[0]));
+                            window.open(openTaoBaoUrl(bizOrderIdAll[0]));
                                      
                             
                             return;
@@ -277,15 +276,23 @@ function orderIdDel(call){
                 time: 2
             });  
             
-            
+
             chrome.storage.sync.get('OrderIdAll', function(data) {  
                 if(data.OrderIdAll){
                     var _code = _.head(data.OrderIdAll);
                     
                     if(_code){
-                         setTimeout(function(){                     
-                            locationUrlGo(_code);       
-                        },5000)  
+                        
+                        // 获取设置时间
+                        getSetTimeoutF(function(dTime){
+                            console.log(dTime);
+                            setTimeout(function(){                     
+                                locationUrlGo(_code);       
+                            },dTime)  
+                            
+                        })
+                        
+                         
                     }
                     
                 }
@@ -386,19 +393,23 @@ function readerList(data){
    
    for(var i=0;i<data.length;i++){
        
-         str = str + '<tr>'+
-                    '<td><a class="del" >x</a>'+ data[i].Ocode +'</td>'+
-                    '<td>'+ data[i].Zcode +'</td>'+
-                    '<td>'+ data[i].uName +'</td>'+
-                    '<td>'+ data[i].UMsg +'</td>'+
-                    '<td>'+ data[i].Ycode +'</td>'+
-                    '<td>'+ data[i].Ycop +'</td>'+
-               '</tr>';
+       var msg = '--';
+       if(data[i].UMsg){
+          msg =  data[i].UMsg;
+       }
+        //  str = str + '<tr>'+
+        //             '<td><a class="del" >x</a>'+ data[i].Ocode +'</td>'+
+        //             '<td>'+ data[i].Zcode +'</td>'+
+        //             '<td>'+ data[i].uName +'</td>'+
+        //             '<td>'+ msg +' </td>'+
+        //             '<td>'+ data[i].Ycode +'</td>'+
+        //             '<td>'+ data[i].Ycop +'</td>'+
+        //        '</tr>';
        
        
    }
    
-   PD('.order-tbody').html(str);
+  // PD('.order-tbody').html(str);
      
 }
 
@@ -434,19 +445,23 @@ function DBinfoList(_tb,callback){
     })
  }
  
+
+ 
 //  获取 抓取间隔时间
-function getSetTimeoutF(){
+function getSetTimeoutF(callback){
     
     chrome.storage.sync.get('setTimeout', function(data) { 
         
         if(data.setTimeout){
-            return data.setTimeout;
+            callback(data.setTimeout);
+        }else{
+            callback(5000);
         }
-        
-        return false;
-        
+
     })   
 }
+ 
+
  
  //  设置 抓取间隔时间
 function setTimeoutF(time){
@@ -454,7 +469,7 @@ function setTimeoutF(time){
     obj.setTimeout = time;
     chrome.storage.sync.set(obj, function(data) { 
         
-        
+ 
     })   
     
 }
@@ -476,6 +491,18 @@ function getSetNumberTypeF(){
 // 设置 账户类型
 function setNumberTypeF(ntype,callback){
     var obj = {};
+    obj.NumberType = ntype;
+    chrome.storage.sync.set(obj, function(data) { 
+        
+        callback();
+        
+    })
+}
+
+// 设置 form 配置
+function setFormALl(time,ntype,callback){
+    var obj = {};
+    obj.setTimeout = time;
     obj.NumberType = ntype;
     chrome.storage.sync.set(obj, function(data) { 
         

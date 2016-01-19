@@ -70,7 +70,7 @@ function sedReload(){
              {greeting: "reload"}, 
              function(response) {                 
                  PL.open({
-                    content: response.farewell,
+                    content: '重加载成功',
                     time: 2
                 });
                    

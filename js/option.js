@@ -9,9 +9,17 @@
 PD(function () {
     
      
-        $('select').material_select();
+       
         
-        
+        // 获取设置时间
+        getSetTimeoutF(function(dTime){
+            console.log(dTime);
+            
+            $("#setTime").val(dTime);
+            
+            $('select').material_select();
+            
+        })
         
         
          $('#setForm').on('submit', function(){
@@ -21,6 +29,19 @@ PD(function () {
                 _setTime =  $("#setTime").find("option:selected").val();
             console.log(_Type);
             console.log(_setTime);
+            
+            
+            setFormALl(_setTime,_Type,function(){
+                
+                PL.open({
+                    content: '设置成功',
+                    time: 2
+                });
+                
+                
+            });
+            
+
             
             return false;
         });
