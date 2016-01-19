@@ -16,7 +16,8 @@ $(function () {
   });
 //清除
   $("#clearId").on("click",function(){
-      console.log("reload")
+     
+     clearDB();
      sedReload();
   });
 // 打开页面
@@ -86,6 +87,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendRequest){
     
 
 });
+
+
 
 
 

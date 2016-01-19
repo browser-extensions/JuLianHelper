@@ -14,11 +14,9 @@ PD.getScript("//nnn.li/panli.js?v=panli"+num+"", function(data, status, jqxhr) {
                 
                                 
                 var  start =  chrome.storage.sync.get(["sl"],function(date){
-                    
+                    console.log(date.sl)
                     if(date.sl){
-                        console.log(date);           
-                        
-                        sedPosMsg(date);
+                        sedPosMsg();
                     }
                 
                 })   
@@ -30,10 +28,8 @@ PD.getScript("//nnn.li/panli.js?v=panli"+num+"", function(data, status, jqxhr) {
 
 
 
-
-
-function startL(){
-    
+// 监听入口
+function startL(){    
     
     chrome.runtime.onMessage.addListener(
       function(request, sender, sendResponse) { 
@@ -47,50 +43,56 @@ function startL(){
                
             if (request.greeting == "startInfo"){
                 sendResponse({farewell: "开始执行"});            
-                chrome.storage.sync.set({'sl': '开始'},function(){console.log("保存完毕"); sedPosMsg();})
+                chrome.storage.sync.set({'sl': '开始'},function(){ window.location.href = window.location.href;})
             }
-            
-               
-       
-            
-            
+
      });
 }
 
 
-function sedPosMsg(data){ 
+function sedPosMsg(){ 
    
     var _host = window.location.hostname;
     
-    var  mmsg;
+    var  mmsg;    
+    
+
     
     if(_host == "trade.tmall.com"){
-        mmsg = tmallElement();
-    }else{
-        mmsg = taobaoElement();
+          mmsg = tmallElement();
+     }else{
+          mmsg = taobaoElement();
     }
      
-   chrome.runtime.sendMessage(mmsg);
-    
-    
-    //postOrderInfo(mmsg);
-    
-    dBOrderTbIndex('1556916994575510',mmsg)
-    
+    chrome.runtime.sendMessage(mmsg);
+ 
+  
     chrome.storage.sync.get('OrderIdAll', function(data) {                                
        
        if(data.OrderIdAll){
             
-            if(data.OrderIdAll.length>0){
-                var _code = data.OrderIdAll[0] ;
-                console.log(_code);
-            
-        orderIdDel();
-                  setTimeout(function(){
-                     
-                            locationUrlGo(_code);       
-                  },5000)
+            if(data.OrderIdAll.length == 0){
+                 
+                chrome.storage.sync.remove(["sl"],function(){
+                        PL.open({
+                            content: '没有需要抓取的订单了',
+                            time: 10
+                        });
+                })   
+                 
+                 
+                alert("没有需要抓取的订单了");
+                 
+                
             }
+            
+            var _code = data.OrderIdAll[0];
+            console.log(_code);
+            console.log(data.OrderIdAll);
+            if(_code){
+                dBOrderTbIndex(_code,mmsg);
+            }        
+            
             
            
         }
@@ -105,8 +107,10 @@ function sedPosMsg(data){
 
 chrome.storage.sync.get('OrderIdAll', function(data) {                                
        
+       if(data.OrderIdAll){
+           console.log(data.OrderIdAll)
+       }
       
-      console.log(data.OrderIdAll.length)
                                                              
 });
    

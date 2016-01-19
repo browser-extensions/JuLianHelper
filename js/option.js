@@ -1,8 +1,16 @@
 
-chrome.runtime.sendMessage('Hello', function(response){
-    document.write(response);
-});
+// chrome.runtime.sendMessage('Hello', function(response){
+//     document.write(response);
+// });
 
+
+
+
+$(function () {
+    
+    
+    
+})
 
 // $(function () {
 //     model.setAutoIp(function(all){

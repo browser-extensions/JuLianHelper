@@ -62,7 +62,7 @@ function addOrderCode(){
               
                var obj = {};
                
-               obj.OrderIdAll = bizOrderIdAll
+               obj.OrderIdAll = _.compact(bizOrderIdAll);
                  
                  chrome.storage.sync.set(obj, function(){
                      
@@ -74,15 +74,12 @@ function addOrderCode(){
                         yes: function(index){
                             
                             
-                            
-                            chrome.storage.sync.get('OrderIdAll', function(data) {
-                                
-                                if(data){
-                                   window.open(openTaoBaoUrl(data.OrderIdAll[0]));     
-                                }
-                              
-                                
-                            });
+                         
+                                    
+                                   chrome.storage.sync.set({'sl': '开始'},function(){ })
+                                    
+                                   window.open(openTaoBaoUrl(bizOrderIdAll[0]));
+                                     
                             
                             return;
                                           
@@ -117,8 +114,9 @@ function postOrderInfo(msdata){
    var  obj = {};  
     
     chrome.storage.sync.get('orderInfoAll', function(data) {               
-        console.log(data.orderInfoAll.length);                      
-        if(data.orderInfoAll){            
+                        
+        if(data.orderInfoAll){  
+            console.log(data.orderInfoAll.length);          
             console.log('追加');
             obj.orderInfoAll = data.orderInfoAll;          
             obj.orderInfoAll.push(info);    
@@ -201,7 +199,9 @@ function orderIdDel(call){
             obj.OrderIdAll = _OrderIdAll;                
             chrome.storage.sync.set(obj, function(){
                 
-    }) 
+                call(_OrderIdAll);
+            
+        }) 
           
  });
  
@@ -231,12 +231,7 @@ function orderIdDel(call){
         
         
         chrome.storage.sync.set(obj,function(data2){            
-                // PL.open({
-                //     content: '成功写入id',
-                //     time: 2
-                // });
-                
-                
+                    
                 DBCreatTb(id,info)
                 
          });      
@@ -252,14 +247,39 @@ function orderIdDel(call){
      
      var obj = {};
      
-     obj[TBid] = info;
-   
+     obj['tb'+TBid] = info;
+     console.log(obj['tb'+TBid]);
         
-    chrome.storage.sync.set(obj,function(data2){            
+    chrome.storage.sync.set(obj,function(data2){     
+      
+      orderIdDel(function(data){
             PL.open({
                 content: '成功写入info',
                 time: 2
-            });
+            });  
+            
+            
+            chrome.storage.sync.get('OrderIdAll', function(data) {  
+                if(data.OrderIdAll){
+                    var _code = _.head(data.OrderIdAll);
+                    
+                    if(_code){
+                         setTimeout(function(){                     
+                            locationUrlGo(_code);       
+                        },5000)  
+                    }
+                    
+                }
+                
+             })
+            
+            
+            
+            
+           
+       })
+      
+            
     });      
                                      
  }
@@ -274,10 +294,12 @@ function DBOrderTbAll(call){
     chrome.storage.sync.get('orderTbIndex', function(data) { 
         if(data.orderTbIndex){
             
-            console.log(data.orderTbIndex);
+            //console.log(data.orderTbIndex);
             
             call(data.orderTbIndex);
 
+        }else{
+            call(false);
         }
         
     })
@@ -297,16 +319,58 @@ function DBOrderTbAllDel(call){
     })
 }
 
+ DBOrderInfoTbAll()
+
 // 遍历所有关联 表信息
 
 function DBOrderInfoTbAll(){
     
+
+    var obj = {};
+        // obj.all = [];
     
-    DBOrderTbAll(function(data){
         
+       DBOrderTbAll(function(data){
+             console.log(data);
+             
+            if(data){
+                   for(var i =0;i< data.length;i++){
+                        var _tb = 'tb'+data[i];
+                   
+                        DBinfoList(_tb);    
+                    
+                    }
+            }
+           
+       
                 
-        
-    })
-    
+          }
+        )    
+  
 }
+
+//list
+function DBinfoList(_tb){
+          
+    chrome.storage.sync.get(_tb, function(d) { 
+           console.log(d[_tb]);                       
+    })
+
+}
+
+//
+
+//clearDB();
+ 
+ // 清除数据
+ function clearDB(){
+     chrome.storage.sync.clear( function(data) { 
+        console.log(data);
+     
+        PL.open({
+                content: '清除成功',
+                time: 2
+            });
+    })
+ }
  
