@@ -294,7 +294,7 @@ function DBOrderTbAll(call){
     chrome.storage.sync.get('orderTbIndex', function(data) { 
         if(data.orderTbIndex){
             
-            //console.log(data.orderTbIndex);
+            console.log(data.orderTbIndex);
             
             call(data.orderTbIndex);
 
@@ -326,34 +326,52 @@ function DBOrderTbAllDel(call){
 function DBOrderInfoTbAll(){
     
 
-    var obj = {};
-        // obj.all = [];
-    
+    var obj = {},
+        infoall = [];
         
-       DBOrderTbAll(function(data){
-             console.log(data);
-             
+        
+      DBOrderTbAll(function(data){
+         console.log(data); 
+        function processNext(copiedData){
+            var _tb,data= copiedData.shift();
             if(data){
-                   for(var i =0;i< data.length;i++){
-                        var _tb = 'tb'+data[i];
-                   
-                        DBinfoList(_tb);    
-                    
-                    }
+                _tb = 'tb'+data[i];
+                DBinfoList(_tb,function(data){
+                     infoall.push(data);
+                     console.log(data);
+                     processNext(copiedData);  
+                });
+            }else{
+                console.log(infoall);   
+                 //callback(infoall);
             }
-           
-       
-                
-          }
-        )    
+            
+        }
+        if(data){
+             processNext(data.slice(0));
+        }
+    })
+          
+      
   
 }
 
+
+//页面渲染
+
+function readerList(data){
+   
+}
+
+
+
 //list
-function DBinfoList(_tb){
+function DBinfoList(_tb,callback){
           
     chrome.storage.sync.get(_tb, function(d) { 
-           console.log(d[_tb]);                       
+                             
+           callback(d[_tb]);                       
+                     
     })
 
 }

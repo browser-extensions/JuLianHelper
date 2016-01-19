@@ -105,14 +105,7 @@ function sedPosMsg(){
      
    
 
-chrome.storage.sync.get('OrderIdAll', function(data) {                                
-       
-       if(data.OrderIdAll){
-           console.log(data.OrderIdAll)
-       }
-      
-                                                             
-});
+
    
 // 跳转 订单详细 url
 function locationUrlGo(id){  

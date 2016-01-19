@@ -12,6 +12,10 @@ $(function () {
     
 })
 
+
+
+
+
 // $(function () {
 //     model.setAutoIp(function(all){
 //         var ipList = '';
